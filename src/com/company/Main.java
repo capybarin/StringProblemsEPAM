@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Main {
 
-    private static String text = "THIS is a test string which would help me to test how the program works, this madamGmadam";
+    private static String text = "THIS is a test string which would help me to test how the program works, this 11011";
     private static String[] words = {"ThIs","test","a","to"};
 
     //Task 1
@@ -129,9 +129,24 @@ public class Main {
         return cs2;
     }
 
+    //Task 4
+    public static void replacer(){
+        text = text.toLowerCase();
+        int userWordLength = 4;
+        String userReplacer = "replacer";
+        String[] fourthTaskWords = text.split("\\W");
+        for (String wotd: fourthTaskWords){
+            if (wotd.length() == userWordLength){
+                text = text.replaceAll(wotd, userReplacer);
+            }
+        }
+        System.out.println("\n"+text);
+    }
+
     public static void main(String[] args) {
 	    countWords();//Task 1
 	    sortByALetter();//Task 2
         findPalindrome();//Task 3
+        replacer();//Task 4
     }
 }
