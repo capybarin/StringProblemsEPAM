@@ -8,7 +8,7 @@ public class Main {
     private static String[] words = {"ThIs","test","a","to"};
 
     //Task 1
-    public static void count(){
+    public static void countWords(){
         int tmpRes = 0;
         text = text.toLowerCase();
         for (int i = 0; i < words.length; i++) {
@@ -25,9 +25,49 @@ public class Main {
             tmpRes=0;
         }
     }
-    
+
+    //Task 2
+    public static int countLettersInTheWord(String word, char c){
+        if(word.isEmpty()) return 0;
+        return (((word.charAt(0) == c) ? (1) : (0)) + countLettersInTheWord(word.substring(1), c));
+    }
+
+    private static ArrayList<String> sortByValue(Map<String, Integer> map) {
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+        list.sort(Comparator.comparingInt(Map.Entry::getValue));
+        Collections.reverse(list);
+        ArrayList<String> result = new ArrayList<>();
+
+        list.sort((o1, o2) -> ((o1.getValue().equals(o2.getValue())) ?
+                (o1.getKey().compareTo(o2.getKey())) : (0)));
+
+        for (Map.Entry<String, Integer> entry : list) {
+            result.add(entry.getKey());
+        }
+
+        return result;
+    }
+
+    public static void sortByALetter(){
+        char userChar = 't';
+        HashMap<String, Integer> map = new HashMap<>();
+        ArrayList<String> notUsed = new ArrayList<>();
+        String[] wordsSecondTask = text.split("\\W");
+
+        for (String word: wordsSecondTask){
+            int i = countLettersInTheWord(word,userChar);
+            if(i>0)
+                map.put(word,i);
+            else notUsed.add(word);
+        }
+
+        Collections.sort(notUsed);
+        System.out.println();
+        sortByValue(map).stream().distinct().forEach(System.out::println);
+    }
 
     public static void main(String[] args) {
-	    count();
+	    countWords();//Task 1
+	    sortByALetter();//Task 2
     }
 }
