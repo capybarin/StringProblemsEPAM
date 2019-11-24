@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Main {
 
-    private static String text = "THIS is a test string which would help me to test how the program works, 11011, this";
+    private static String text = "THIS is a test string which would help me to test how the program works, this madamGmadam";
     private static String[] words = {"ThIs","test","a","to"};
 
     //Task 1
@@ -66,8 +66,72 @@ public class Main {
         sortByValue(map).stream().distinct().forEach(System.out::println);
     }
 
+
+    //Task 3
+    public static void findPalindrome() {
+        char[] textTmp = addBoundaries(text.toCharArray());
+        int[] palindromeRadius = new int[textTmp.length];
+        int palindromeCenter = 0;
+        int palindromeRightBoard = 0;
+        int tmp1;
+        int tmp2 = 0;
+        for (int i = 1; i<textTmp.length; i++) {
+            if (i>palindromeRightBoard) {
+                palindromeRadius[i] = 0; tmp1 = i-1; tmp2 = i+1;
+            } else {
+                int i2 = palindromeCenter*2-i;
+                if (palindromeRadius[i2]<(palindromeRightBoard-i)) {
+                    palindromeRadius[i] = palindromeRadius[i2];
+                    tmp1 = -1;
+                } else {
+                    palindromeRadius[i] = palindromeRightBoard-i;
+                    tmp2 = palindromeRightBoard+1; tmp1 = i*2-tmp2;
+                }
+            }
+            while (tmp1>=0 && tmp2<textTmp.length && textTmp[tmp1]==textTmp[tmp2]) {
+                palindromeRadius[i]++; tmp1--; tmp2++;
+            }
+            if ((i+palindromeRadius[i])>palindromeRightBoard) {
+                palindromeCenter = i; palindromeRightBoard = i+palindromeRadius[i];
+            }
+        }
+        int len = 0; palindromeCenter = 0;
+        for (int i = 1; i<textTmp.length; i++) {
+            if (len<palindromeRadius[i]) {
+                len = palindromeRadius[i]; palindromeCenter = i;
+            }
+        }
+        char[] res = Arrays.copyOfRange(textTmp, palindromeCenter-len, palindromeCenter+len+1);
+        System.out.println("\n"+String.valueOf(removeBoundaries(res)));
+    }
+
+    public static char[] addBoundaries(char[] cs) {
+        if (cs==null || cs.length==0)
+            return "||".toCharArray();
+
+        char[] cs2 = new char[cs.length*2+1];
+        for (int i = 0; i<(cs2.length-1); i = i+2) {
+            cs2[i] = '|';
+            cs2[i+1] = cs[i/2];
+        }
+        cs2[cs2.length-1] = '|';
+        return cs2;
+    }
+
+    public static char[] removeBoundaries(char[] cs) {
+        if (cs==null || cs.length<3)
+            return "".toCharArray();
+
+        char[] cs2 = new char[(cs.length-1)/2];
+        for (int i = 0; i<cs2.length; i++) {
+            cs2[i] = cs[i*2+1];
+        }
+        return cs2;
+    }
+
     public static void main(String[] args) {
 	    countWords();//Task 1
 	    sortByALetter();//Task 2
+        findPalindrome();//Task 3
     }
 }
